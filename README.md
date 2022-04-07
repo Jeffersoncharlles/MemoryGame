@@ -1,2 +1,2 @@
 # MemoryGame
-Memory game  with game you are decoration cards iguals
+Memory game  with game you are decoration cards igual
