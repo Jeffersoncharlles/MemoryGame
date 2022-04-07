@@ -28,12 +28,23 @@ export const LogoLink = styled.a`
     display: block;
     span{
         font-size: 3rem;
+        font-weight: 600;
+        color: ${({ theme }) => theme.color.info};
         
         &::before{
-            content: "";
-            border: 2px solid ${({ theme }) => theme.color.success};
+            content: "#";
+           width: 0.75rem;
+           color:${({ theme }) => theme.color.primary2} ;
+           
             display: inline-block;
         }
+        /* &::after{
+            content: "";
+            border: 5px solid ${({ theme }) => theme.color.tertiary};
+            border-radius: 50%;
+            display: block;
+            
+        } */
     }
 `
 
@@ -55,7 +66,7 @@ export const SectionGrid = styled.section`
 
     @media (max-width: 750px){
         justify-content: center;
-        margin: 0 20px;
+        margin: 0;
     }
 `
 

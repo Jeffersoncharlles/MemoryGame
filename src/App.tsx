@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { InfoItem } from './components/InfoItem'
 import {
   Container,
   Section,
@@ -18,7 +19,8 @@ function App() {
           <span>MemoryGame</span>
         </LogoLink>
         <InfoContainer>
-          ...
+          <InfoItem label='Tempo' value='00:00' />
+          <InfoItem label='Movimentos' value='0' />
         </InfoContainer>
         <button>Reiniciar</button>
       </Section>
