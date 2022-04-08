@@ -14,6 +14,7 @@ export const Container = styled.div<ContainerProps>`
     align-items: center;
     cursor: pointer;
     transition: ease filter .3s;
+    transition: all background .3s;
 
     &:hover{
         filter: ${({ showBackground }) => showBackground ? `` : `brightness(.9)`};

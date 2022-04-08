@@ -3,6 +3,7 @@ import { Button } from './components/Button'
 import { InfoItem } from './components/InfoItem'
 import { items } from './utils/items'
 import { formatTimeElapsed } from './utils/formatTimeElapsed'
+import { Card } from './components/Card'
 import {
   Container,
   Section,
@@ -11,15 +12,12 @@ import {
   InfoContainer,
   Grid
 } from './styles'
-import { Card } from './components/Card'
-
 
 interface ICardItem {
   item: number | null;
   shown: boolean;
   permanentShow: boolean;
 }
-
 
 function App() {
   const [playing, setPlaying] = useState<boolean>(false)
@@ -40,6 +38,48 @@ function App() {
     return () => clearInterval(timer)
   }, [playing, timeElapsed]);
 
+  useEffect(() => {
+    //verify if opened are equal
+
+    if (shownCardCount === 2) {
+      let opened = cardsGrid.filter((open) => open.shown === true)
+      if (opened.length === 2) {
+        //step 1 - if both are equal , make every 'shown' permanent
+        // se sao iguais tornar todos os permanent em true
+        if (opened[0].item === opened[1].item) {
+          let tmp = [...cardsGrid]
+          for (let i in tmp) {
+            if (tmp[i].shown) {
+              tmp[i].permanentShow = true;
+              tmp[i].shown = false
+            }
+          }
+          setCardsGrid(tmp)
+          setShownCardCount(0)
+
+        } else {
+          //step - if they are NOT equal , close all 'shown'
+          //se eles nao sao iguais fechar todos
+          setTimeout(() => {
+            let tmp = [...cardsGrid]
+            for (let i in tmp) {
+              tmp[i].shown = false
+            }
+            setCardsGrid(tmp)
+            setShownCardCount(0)
+          }, 1000);
+        }
+        setMoveCount(moveCount => moveCount + 1)
+      }
+    }
+  }, [shownCardCount, cardsGrid]);
+
+  useEffect(() => {
+    //verify if game is over
+    if (moveCount > 0 && cardsGrid.every(i => i.permanentShow === true)) {
+      setPlaying(false);
+    }
+  }, [moveCount, cardsGrid]);
 
 
   const handleResetCreateGrid = () => {
@@ -67,19 +107,23 @@ function App() {
         }
         tmpCardGrid[pos].item = i;
       }
-    }//create grid 2 x items
-    // console.table(tmpCardGrid)
+    }
+    //create grid 2 x items
     setCardsGrid(tmpCardGrid)
+
     //step 3 - start game
     setPlaying(true);
   }
 
   const handleShowItem = (id: number) => {
-    if (playing && id !== null && moveCount < 2) {
-      let tmpGrid = [...cardsGrid]
+    //compare true and id exists and shownCardCount < 2
+    if (playing && id !== null && shownCardCount < 2) {
+      let tmpGrid = [...cardsGrid]//clone
+
+      //compare conditions false
       if (!tmpGrid[id].permanentShow && !tmpGrid[id].shown) {
         tmpGrid[id].shown = true;
-        setMoveCount(moveCount + 1)
+        setShownCardCount(shownCardCount + 1)
       }
       setCardsGrid(tmpGrid)
     }
@@ -87,16 +131,22 @@ function App() {
 
   return (
     <Container>
+
       <Section>
+
         <LogoLink href=''>
           <span>MemoryGame</span>
         </LogoLink>
+
         <InfoContainer>
           <InfoItem label='Tempo' value={formatTimeElapsed(timeElapsed)} />
-          <InfoItem label='Movimentos' value='0' />
+          <InfoItem label='Movimentos' value={String(moveCount)} />
         </InfoContainer>
+
         <Button title="Reiniciar" onClick={handleResetCreateGrid} />
+
       </Section>
+
       <SectionGrid>
         <Grid>
           {cardsGrid.map((item, index) => {
@@ -104,6 +154,7 @@ function App() {
           })}
         </Grid>
       </SectionGrid>
+
     </Container>
   )
 }
