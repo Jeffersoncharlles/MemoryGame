@@ -30,13 +30,16 @@ export const LogoLink = styled.a`
         font-size: 3rem;
         font-weight: 600;
         color: ${({ theme }) => theme.color.info};
+        position: relative;
         
         &::before{
+            position: absolute;
             content: "#";
-           width: 0.75rem;
-           color:${({ theme }) => theme.color.primary2} ;
-           
-            display: inline-block;
+            left: -12px;
+            width: 0.75rem;
+            color:${({ theme }) => theme.color.primary2} ;
+            z-index: -1; 
+            
         }
         /* &::after{
             content: "";
