@@ -75,7 +75,14 @@ function App() {
   }
 
   const handleShowItem = (id: number) => {
-
+    if (playing && id !== null && moveCount < 2) {
+      let tmpGrid = [...cardsGrid]
+      if (!tmpGrid[id].permanentShow && !tmpGrid[id].shown) {
+        tmpGrid[id].shown = true;
+        setMoveCount(moveCount + 1)
+      }
+      setCardsGrid(tmpGrid)
+    }
   }
 
   return (
