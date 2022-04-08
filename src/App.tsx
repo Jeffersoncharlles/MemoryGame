@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button } from './components/Button'
 import { InfoItem } from './components/InfoItem'
 import { items } from './utils/items'
+import { formatTimeElapsed } from './utils/formatTimeElapsed'
 import {
   Container,
   Section,
@@ -11,6 +12,7 @@ import {
   Grid
 } from './styles'
 import { Card } from './components/Card'
+
 
 interface ICardItem {
   item: number | null;
@@ -27,6 +29,18 @@ function App() {
   const [cardsGrid, setCardsGrid] = useState<ICardItem[]>([])
 
   useEffect(() => handleResetCreateGrid(), [])
+  useEffect(() => {
+
+    //step 1 - start time
+    const timer = setInterval(() => {
+      if (playing) {
+        setTimeElapsed(time => time + 1)
+      }
+    }, 1000);
+    return () => clearInterval(timer)
+  }, [playing, timeElapsed]);
+
+
 
   const handleResetCreateGrid = () => {
     //step 1 - reset  game
@@ -39,7 +53,7 @@ function App() {
     for (let i = 0; i < (items.length * 2); i++) {
       tmpCardGrid.push({
         item: null,// create empty
-        shown: true,//no show item
+        shown: false,//no show item
         permanentShow: false, // no show item permanent
       })
     }
@@ -71,7 +85,7 @@ function App() {
           <span>MemoryGame</span>
         </LogoLink>
         <InfoContainer>
-          <InfoItem label='Tempo' value='00:00' />
+          <InfoItem label='Tempo' value={formatTimeElapsed(timeElapsed)} />
           <InfoItem label='Movimentos' value='0' />
         </InfoContainer>
         <Button title="Reiniciar" onClick={handleResetCreateGrid} />

@@ -18,10 +18,13 @@ interface ICardItem {
 
 export const Card = ({ data, onClick }: ICardItem) => {
 
-    const NameIcon: IconType | any = data.item !== null ? items[data?.item].icon : <DivS></DivS>;
+    const NameIcon: IconType | any = data.item !== null && items[data?.item].icon;
 
     return (
-        <Container onClick={onClick}>
+        <Container
+            onClick={onClick}
+            showBackground={data.permanentShow || data.shown}
+        >
             {!data.permanentShow && !data.shown && (
                 <VscSmiley size={40} />
             )}

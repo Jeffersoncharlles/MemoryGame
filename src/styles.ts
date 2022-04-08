@@ -4,8 +4,11 @@ export const Container = styled.main`
     width: 100%;
     max-width: 750px;
     margin: auto;
-    display: flex;
     padding: 50px 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     @media (max-width: 750px) {
         flex-direction: column;
@@ -27,7 +30,7 @@ export const LogoLink = styled.a`
     
     display: block;
     span{
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-weight: 600;
         color: ${({ theme }) => theme.color.info};
         position: relative;
